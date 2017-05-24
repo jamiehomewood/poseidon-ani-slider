@@ -1,0 +1,53 @@
+<!doctype html> 
+
+<html lang="en"> 
+<head> 
+ <meta charset="utf-8"> 
+ <meta name="description" content="Hello World!"> 
+ <meta name="author" content="Me"> 
+ <title>Hello World!</title> 
+</head> 
+<body> 
+
+ <canvas id="myCanvas" width="500" height="400">Not supported content</canvas> 
+    <input type="range" id="length" name="length" min="-100" max="100" oninput="updateTextInput(this.value);">
+    <input type="text" id="textInput" value="">
+
+ <script>     
+     var cnv = document.getElementById("myCanvas"); 
+     var g = cnv.getContext("2d"); 
+
+ g.lineWidth = 3; 
+ g.strokeStyle = "#000000"; //black 
+ g.fillStyle = "#FF5500"; //red 
+
+ g.beginPath(); 
+ g.arc(100, 100, 50, 0, 2*Math.PI); 
+ g.fill(); 
+ g.stroke(); 
+
+     function updateTextInput(val) {
+          document.getElementById('textInput').value=val;
+
+        g.beginPath();
+        var placement = val;
+        g.arc(placement, 100, 50, 0, 2*Math.PI); 
+        g.fill(); 
+        g.stroke(); 
+
+
+     }
+
+ g.beginPath(); 
+ g.moveTo(100, 50); 
+ g.lineTo(300, 50); 
+ g.stroke(); 
+
+ g.beginPath(); 
+ g.moveTo(100, 150); 
+ g.lineTo(300, 150); 
+ g.stroke(); 
+
+ </script> 
+
+</body> 

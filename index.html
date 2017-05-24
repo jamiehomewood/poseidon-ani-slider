@@ -9,12 +9,266 @@
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 
+<!-- slider css -->
+<link rel="stylesheet" href="styles.css">
+
 <!-- Latest compiled and minified JavaScript -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
 
-<body>
-<p>heeheh</p>
+<body onload="setCanvas()">
+    <div class="container">
+    	
+        <!-- canvas in here -->
+        <div class="row">
+        	<div class="col-xs-12">
+                <canvas id="canvas" width="1100" height="700" style="border:1px solid #d3d3d3;">
+                    This text is displayed if your browser does not support HTML5 Canvas.
+                </canvas>
+            </div>    
+    	</div>
+        <!-- end canvas -->
+        <div id="reset"><button type="button" onclick="resetCanvas()">Reset</button></div>
+        
+        <div class="row">
+            <div class="col-xs-12">
+            	 <p id="slidertitle">Slider 1 <span id="loc0"></span></p>
+                 <div class="range range-primary">
+                   	<input type="range" name="range0" id="range0" min="1" max="100" value="50" oninput="move('0', range0.value)">
+                 	<output id="rangeDanger0">50</output>
+            	 </div>
+        	</div>
+            <div class="col-xs-12">
+            	 <p id="slidertitle">Slider 2 <span id="loc1"></span></p>
+                 <div class="range range-info">
+                   	<input type="range" name="range1" id="range1" min="1" max="100" value="50" oninput="move('1', range1.value)">
+                 	<output id="rangeDanger1">50</output>
+            	 </div>
+        	</div>
+            <div class="col-xs-12">
+            	 <p id="slidertitle">Slider 3 <span id="loc2"></span></p>
+                 <div class="range range-danger">
+                   	<input type="range" name="range2" id="range2" min="1" max="100" value="50" oninput="move('2', range2.value)">
+                 	<output id="rangeDanger2">50</output>
+            	 </div>
+        	</div>
+         </div>
+     </div>
 </body>
 </html>
+
+<script>
+
+var objs = [];
+var obj = {};
+var c = document.getElementById("canvas");
+var ctx = c.getContext("2d");
+var PI2=Math.PI*2;
+
+function resetCanvas()
+{
+	document.getElementById("range0").value = 50;
+	document.getElementById("range1").value = 50;
+	document.getElementById("range2").value = 50;
+	objs = [];
+	setCanvas();
+}
+
+function setCanvas()
+{	
+	document.getElementById("range0").value = 50;
+	document.getElementById("range1").value = 50;
+	document.getElementById("range2").value = 50;
+
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	
+	for(a = 0; a < 3; a++)
+	{
+		if(a == 0)
+		{
+			obj = {
+				name:"range0",
+				radius:100,
+				strokeStyle:"#00ff00",
+				lineWidth:3,
+				cx:(canvas.width / 2) - 50,
+   	 			cy:(canvas.height / 2) - 50,
+			}			
+		}
+		if(a == 1)
+		{
+			obj = {
+				name:"range1",
+				radius:100,
+				strokeStyle:"#0000ff",
+				lineWidth:3,
+				cx:(canvas.width / 2) + 50,
+   	 			cy:(canvas.height / 2) - 50
+			}
+		}
+		if(a == 2)
+		{
+			obj = {
+				name:"range2",
+				radius:100,
+				strokeStyle:"#FF0000",
+				cx:(canvas.width / 2),
+				lineWidth:3,
+   	 			cy:(canvas.height / 2) + 50
+			}
+		}
+		objs.push(obj);
+		//alert(objs[a].name);
+		
+		
+		draw(a);
+	}
+	
+	//draw a dot in center
+	obj = {
+		name:"center",
+		radius:2,
+		strokeStyle:"#000000",
+		cx:(canvas.width / 2),
+		cy:(canvas.height / 2)
+	}
+	objs.push(obj);
+	draw(3);
+}
+
+/*$(function(){
+
+	
+	/*var obj1 = {
+		name:"range1", 
+		x:0, 
+		y:0
+	};
+		
+	var obj2 = {
+		name:"range2", 
+		x:0, 
+		y:0
+	};
+		
+	var obj3 = {
+		name:"range3", 
+		x:0, 
+		y:0
+	};
+	
+	
+		
+    	//var radius=150;
+		var PI2=Math.PI*2;
+		
+		//var $range=$('#range'+ a);
+		//draw(document.getElementById($range),0);
+		
+		//$range.on('change',function(){
+        //draw(document.getElementById($range), parseInt($range.val()));
+		});
+	}*/
+	
+    
+	
+	//this will be handy!
+	/*width
+	var centerX = canvas.width / 2;
+	//height
+    var centerY = canvas.height / 2;
+	
+    ctx.beginPath();
+	ctx.arc(centerX - 75,centerY - 75 ,150,0,2*Math.PI);
+	ctx.stroke();
+	draw(75);
+	
+	ctx.beginPath();
+	ctx.arc(centerX + 175,centerY - 75 ,150,0,2*Math.PI);
+	ctx.stroke();
+	
+	ctx.beginPath();
+	ctx.arc(centerX,centerY + 100 ,150,0,2*Math.PI);
+	ctx.stroke();*/
+	
+function getobj(ob)
+{
+	var ob = objs[ob];
+	return ob;
+}
+
+
+function draw(obj)
+{
+		var o = getobj(obj);
+	
+		ctx.beginPath();
+		ctx.arc(o.cx,o.cy,o.radius,0,PI2);
+		ctx.strokeStyle = o.strokeStyle;
+		ctx.lineWidth = o.lineWidth;
+		ctx.closePath();
+		ctx.stroke();
+}
+
+function move(id, x)
+{
+	//if not reset button click
+	if(id != 99)
+	{
+		var ob2 = getobj(id);
+		//ob2.cx = x;
+		var oldcx = ob2.cx;
+		var oldcy = ob2.cy;
+		var newcx = 0;
+		var newcy = 0;
+	}
+	
+	if(id == 0)
+	{	
+		
+			newcx = ((canvas.width / 2)- ob2.radius) + parseInt(x);
+			newcy = ((canvas.height / 2)- ob2.radius) + parseInt(x);
+
+	}
+	if(id == 1)
+	{
+			newcx = ((canvas.width / 2)+ ob2.radius) - parseInt(x);
+			newcy = ((canvas.height / 2)- ob2.radius) + parseInt(x);
+	}
+	if(id == 2)
+	{
+			newcx = oldcx; //erm!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			newcy = ((canvas.height / 2)+ ob2.radius) - parseInt(x);
+	}
+	if(id == 99)
+	{
+		setCanvas();
+	}
+	
+	if(id != 99)
+	{
+		ob2.cx = newcx;
+		ob2.cy = newcy;
+		document.getElementById("rangeDanger" + id).innerHTML = x;
+		//need to do calculations here for each circle
+		//ob2.cx = ob2.cx + ((canvas.width / 2) - x);
+		document.getElementById("loc"+id).innerHTML = newcx + ":" + newcy + ":" + x;
+		//now dedraw canvas so we have the others display on canvas too!
+		redrawcanvas();
+	}
+}
+
+function redrawcanvas()
+{
+	ctx.clearRect(0,0,canvas.width,canvas.height);
+	for(x = 0; x < 3; x++)
+	{
+		draw(x);	
+	}
+	
+	draw(3);
+}
+
+</script>
